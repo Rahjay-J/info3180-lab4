@@ -3,9 +3,9 @@ from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
-from werkzeug.security import check_password_hash  # Added import
+from werkzeug.security import check_password_hash
 from app.models import UserProfile
-from app.forms import LoginForm
+from app.forms import LoginForm, UploadForm
 
 ###
 # Routing for your application.
@@ -22,32 +22,33 @@ def about():
     return render_template('about.html', name="Mary Jane")
 
 @app.route('/upload', methods=['POST', 'GET'])
-@login_required  # Added decorator to protect route
+@login_required
 def upload():
-    # Instantiate your form class
-    # (You'll need to create an upload form class in forms.py)
-    # form = UploadForm()
+    form = UploadForm()
     
-    # if form.validate_on_submit():
-    #     # Handle file upload logic here
-    #     flash('File Saved', 'success')
-    #     return redirect(url_for('upload'))  # Should redirect to uploads list
+    if form.validate_on_submit():
+        # Get the file data from the form
+        file = form.file.data
+        
+        # Secure the filename and save to upload folder
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+        flash('File Saved Successfully', 'success')
+        return redirect(url_for('upload'))
     
-    return render_template('upload.html')  # , form=form)
+    return render_template('upload.html', form=form)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
 
-    if form.validate_on_submit():  # Proper form validation
-        # Get form data
+    if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
 
-        # Query database for user
         user = UserProfile.query.filter_by(username=username).first()
 
-        # Check user exists and password matches
         if user and check_password_hash(user.password, password):
             login_user(user)
             flash('Login successful!', 'success')
@@ -67,7 +68,7 @@ def logout():
 # User loader callback
 @login_manager.user_loader
 def load_user(id):
-    return UserProfile.query.get(int(id))  # Simplified query
+    return UserProfile.query.get(int(id))
 
 ###
 # Helper functions and error handlers

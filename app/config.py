@@ -5,11 +5,11 @@ class Config(object):
     """Base configuration class"""
     DEBUG = False
     SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback_key')  # For session security
-    MAX_CONTENT_LENGTH = 4 * 1024 * 1024  # 4MB max upload size (common for images)
+    MAX_CONTENT_LENGTH = 4 * 1024 * 1024  
 
     # File upload configuration
     UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', './uploads')
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}  # For Exercise 5
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}  
     
     # Database configuration
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
