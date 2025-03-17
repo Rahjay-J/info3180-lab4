@@ -1,0 +1,31 @@
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.image-item {
+    transition: transform 0.2s;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.image-item:hover {
+    transform: translateY(-5px);
+}
+
+.image-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.filename {
+    padding: 0.75rem;
+    background: #f8f9fa;
+    font-size: 0.9rem;
+    text-align: center;
+}

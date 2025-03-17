@@ -10,6 +10,6 @@ class LoginForm(FlaskForm):
 class UploadForm(FlaskForm):
     file = FileField('Upload Image', validators=[
         FileRequired(message='Please select a file'),
-        FileAllowed(['jpg', 'png', 'jpeg'], 'Only images allowed! (jpg, png)')
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Only images allowed! (jpg, png, jpeg)')
     ])
     submit = SubmitField('Upload')
